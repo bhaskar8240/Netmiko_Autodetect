@@ -5,11 +5,12 @@ from netmiko.ssh_exception import NetMikoAuthenticationException
 from paramiko.ssh_exception import SSHException
 from getpass import getpass
 
-
+#Use this for  password Hiding 
 user= input('Enter ssh username:')
 
 password=getpass('Enter ssh password:')
 
+#Use this for open and read your text file 
 with open('ip_address FILE ')as f:
     ip_cmd= f.read().splitlines()
 
@@ -24,10 +25,10 @@ with open('D:/python/ciscorouter_config.txt')as f:
 with open('D:/python/ciscoswitch_config.txt')as f:
     ciscosw_cmd = f.read().splitlines()
 
-       
+#Use your own environment image name.       
 Device_img = ['I86BI_LINUX-ADVENTERPRISEK9-M','i86bi_LinuxL2-AdvEnterpriseK9','Junos']
 
-
+#Loop use for multiple ip .
 for ip in ip_cmd:
 
     remote_devices = {
@@ -42,7 +43,7 @@ for ip in ip_cmd:
 
     }
  
-    
+    #Try and except use for aviod the error of any miscommunicatio with devices 
     try:
         Device =  SSHDetect(**remote_devices)
         best_match = Device.autodetect()
@@ -60,9 +61,9 @@ for ip in ip_cmd:
     except(EOFError):
         print(f'EOFE for device: {ip}')
         continue
-
+#use for good look .
     print('='* 80 + '\n' + 'CONNECTED_DEVICE: ' + ip +'\n' + '='* 80)
-
+#Use for Find the above mentioned device image .  
     for soft_ver in Device_img:                       
 
         print('Chking Software version'+soft_ver)     
@@ -81,7 +82,7 @@ for ip in ip_cmd:
         else:
             print('Device hostname didnot found' +soft_ver)
 
-
+#Use for push the config file which you open with command .
     if soft_ver == 'junos':
         print('='* 80 + '\n' + 'Config_the_Juniper_devices: ' + soft_ver + '\n' + '='* 80)
 
@@ -98,7 +99,7 @@ for ip in ip_cmd:
         output= net_connect.send_config_set(ciscortr_cmd)
         print(output)    
 
-    elif soft_ver == 'ce1':
+    elif soft_ver == 'i86bi_LinuxL2-AdvEnterpriseK9':
 
         print('='* 80 + '\n' + 'Config_the_Ciscosw_devices: ' + soft_ver + '\n' + '='* 80)
 
